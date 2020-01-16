@@ -17,13 +17,11 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
-        
-        #set the background color
-        #self.bg_color = (230, 230, 230)
 
     def run_game(self):
         """Start the main loop for the game."""
         while True:
+            
             #watch for keyboard and mouse events.
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -31,12 +29,12 @@ class AlienInvasion:
 
             #Redraw the screen during each pass through the loop
             self.screen.fill(self.settings.bg_color)
-            self.ship.blitme()
+            #self.ship.blitme()
             
             # Make the most recently drawn scree visible.
             pygame.display.flip()
 
-if __name__ == '__main___':
+if __name__ == '__main__':
     # Make a game instance, and run the game.
     ai = AlienInvasion()
     ai.run_game()
