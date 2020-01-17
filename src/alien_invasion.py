@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from ufo import Ufo
+from missile import Missile
 
 class AlienInvasion:
     """Over Class to manage game assets and behavior."""
@@ -19,6 +20,7 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.ufo = Ufo(self)
+        self.missile = Missile(self, self.ship)
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -26,6 +28,8 @@ class AlienInvasion:
             
             self._check_events()
             self.ship.update()
+            self.ufo.update()
+            self.missile.update()
             self._update_screen()
 
 
@@ -35,23 +39,38 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    #move ship right
-                    self.ship.moving_right = True
-                if event.key == pygame.K_LEFT:
-                    self.ship.moving_left = True
+                self._check_keydown_event(event)
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
-                if event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._check_keyup_event(event)
 
+    def _check_keydown_event(self, event):
+        """respond to keypresses"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        if event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+        if event.key == pygame.K_a:
+            self.ufo.moving_left =True
+        if event.key == pygame.K_SPACE:
+            self.missile.shooting_missile = True
+        elif event.key ==pygame.K_q:
+            sys.exit()
+    
+    def _check_keyup_event(self, event):
+        """respond to key releases"""
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        if event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
+        if event.key == pygame.K_a:
+            self.ufo.moving_left = False
 
     def _update_screen(self):
         """Redraw screen during each pass through loop"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         self.ufo.blitme()
+        self.missile.blitme()
 
         pygame.display.flip()
     
