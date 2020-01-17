@@ -70,7 +70,8 @@ class AlienInvasion:
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         self.ufo.blitme()
-        self.missile.blitme()
+        if self.missile.shooting_missile or self.missile.missile_shot:
+            self.missile.blitme()
 
         pygame.display.flip()
     

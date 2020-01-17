@@ -29,6 +29,10 @@ class Missile():
         if self.missile_shot == True:
             self.rect.y -= self.settings.missile_speed
             #self.blitme()
+        if self.rect.y < 0:
+            self.missile_shot = False
+            self.rect.bottom = self.ship.rect.top
+            self.rect.x = self.ship.x
         else:
             self.rect.x = self.ship.x
     
