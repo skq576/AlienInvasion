@@ -1,5 +1,5 @@
-import pygame
 from os.path import dirname, join
+import pygame
 
 class Ship:
     """ A class to manage the ship"""

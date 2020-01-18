@@ -20,7 +20,7 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.ufo = Ufo(self)
-        self.missile = Missile(self, self.ship)
+        self.missiles = pygame.sprite.Group()
 
     def run_game(self):
         """Start the main loop for the game."""
@@ -29,8 +29,9 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self.ufo.update()
-            self.missile.update()
+            self.missiles.update()
             self._update_screen()
+            self.delete_missiles()
 
 
     def _check_events(self):
@@ -52,7 +53,7 @@ class AlienInvasion:
         if event.key == pygame.K_a:
             self.ufo.moving_left =True
         if event.key == pygame.K_SPACE:
-            self.missile.shooting_missile = True
+            self._fire_missile()
         elif event.key ==pygame.K_q:
             sys.exit()
     
@@ -64,14 +65,26 @@ class AlienInvasion:
             self.ship.moving_left = False
         if event.key == pygame.K_a:
             self.ufo.moving_left = False
+    
+    def _fire_missile(self):
+        """create a new missile and add it to the missile group"""
+        new_missile = Missile(self)
+        self.missiles.add(new_missile)
+
+    def delete_missiles(self):
+        for missile in self.missiles.copy():
+            if missile.rect.bottom <= 0:
+                self.missiles.remove(missile)
+        print(len(self.missiles))
 
     def _update_screen(self):
         """Redraw screen during each pass through loop"""
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
         self.ufo.blitme()
-        if self.missile.shooting_missile or self.missile.missile_shot:
-            self.missile.blitme()
+        #if self.missile.shooting_missile or self.missile.missile_shot:
+        for missile in self.missiles.sprites():
+            missile.blitme()
 
         pygame.display.flip()
     

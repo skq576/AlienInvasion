@@ -1,12 +1,15 @@
-import pygame
 from os.path import dirname, join
+import pygame
+from pygame.sprite import Sprite
 
-class Missile():
-    def __init__(self, ai_game, ship):
+class Missile(Sprite):
+    """MISSILE to shoot enemies"""
+    def __init__(self, ai_game):
+        super().__init__()
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
         self.settings = ai_game.settings
-        self.ship = ship
+        self.ship = ai_game.ship
 
         self.dir_path = dirname(__file__)
         self.file_path = join(self.dir_path, "./missile.bmp")
@@ -17,24 +20,12 @@ class Missile():
         self.missile_shot = False
 
         #draw missile at the top of ship
-        self.rect.bottom = self.ship.rect.top
+        self.rect.midtop = self.ship.rect.midtop
         self.rect.x = self.ship.x
 
     def update(self):
-        if self.shooting_missile == True:
-            #self.rect = self.ship.rect.top
-            self.shooting_missile = False
-            #self.blitme()
-            self.missile_shot = True
-        if self.missile_shot == True:
-            self.rect.y -= self.settings.missile_speed
-            #self.blitme()
-        if self.rect.y < 0:
-            self.missile_shot = False
-            self.rect.bottom = self.ship.rect.top
-            self.rect.x = self.ship.x
-        else:
-            self.rect.x = self.ship.x
+        self.rect.y -= self.settings.missile_speed
+
     
     def blitme(self):
         self.screen.blit(self.image, self.rect)
