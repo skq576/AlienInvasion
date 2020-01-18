@@ -19,20 +19,20 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
-        self.ufo_example = Ufo(self)
-        # self.ufo = Ufo(self)
         self.ufos = pygame.sprite.Group()
         self.missiles = pygame.sprite.Group()
 
-        self.available_space = self.settings.screen_width
-        self.available_ufos = (self.available_space // (self.ufo_example.rect.width * 2))
+        # self.available_width = self.settings.screen_width
+        # self.available_ufos = (self.available_width // (self.ufo_example.rect.width * 2))
+        # self.available_height = self.settings.screen_height
+        # self.available_rows = (self.available_height // (self.ufo_example.rect.height * 2) // 2)
 
         self.initial_ufo_location = 0
 
     def run_game(self):
         """Start the main loop for the game."""
         #create ufos
-        self.add_ufos(self.available_ufos)
+        self.creat_fleet_ufos()
         
         while True:
             
@@ -73,18 +73,27 @@ class AlienInvasion:
             self.ship.moving_left = False
 
 
-    def add_ufos(self, count):
+    def creat_fleet_ufos(self):
+        "Determine avaialable space for UFOs"
+        ufo_example = Ufo(self)
+        available_width = self.settings.screen_width
+        available_ufos = (available_width // (ufo_example.rect.width * 2))
+        available_height = self.settings.screen_height
+        available_rows = (available_height // (ufo_example.rect.height * 2) // 2)
+
         """create ufos"""
-        for ufo_number in range(1, count):
-            self._create_ufo_row()
-            print(ufo_number)
+        for row in range(1, available_rows):
+            print(row)
+            for ufo_number in range(1, available_ufos):
+                self._create_ufo_row(ufo_number, row)
+                #print(ufo_number)
             
-    def _create_ufo_row(self):
+    def _create_ufo_row(self, ufo_number, row):
             new_ufo = Ufo(self)
-            new_ufo.rect.x = new_ufo.rect.x + self.initial_ufo_location
-            self.initial_ufo_location += (self.ufo_example.rect.width * 2)
+            new_ufo.rect.x = new_ufo.rect.x * (ufo_number * 2)
+            new_ufo.rect.y = new_ufo.rect.y * (row * 2)
             self.ufos.add(new_ufo)
-            print(new_ufo.rect.x)
+            #print(new_ufo.rect.x)
     
     def _fire_missile(self):
         """create a new missile and add it to the missile group"""
