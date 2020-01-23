@@ -38,7 +38,7 @@ class AlienInvasion:
             
             self._check_events()
             self.ship.update()
-            #self.ufos.update()
+            self.ufos.update()
             self.missiles.update()
             self._update_screen()
             self.delete_missiles()

@@ -18,6 +18,9 @@ class Ufo(Sprite):
 
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
+        self.move_left = False
+        self.move_right = True
+        self.direction_count = 0
         #self.rect.center = self.screen_rect.center
         # self.moving_left = False
         # self.moving_right = False
@@ -25,9 +28,19 @@ class Ufo(Sprite):
         # self.moving_down = False
 
     def update(self):
-        # if self.moving_left == True and self.rect.left > 0:
-            # self.rect.x -= self.settings.ufo_speed
-        print("update method")
+        if self.move_right and self.rect.right < self.screen_rect.right:
+            self.rect.x += self.settings.ufo_speed
+            self.direction_count += 1
+            if self.rect.right >= self.screen_rect.right:
+                self.move_left = True
+                self.move_right = False
+                
+        if self.move_left and self.rect.left > self.screen_rect.left:
+            self.rect.x -= self.settings.ufo_speed
+            if self.rect.x <= self.screen_rect.left:
+                self.move_left = False
+                self.move_right = True
+                
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)

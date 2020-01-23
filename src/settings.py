@@ -8,6 +8,6 @@ class Settings:
         self.bg_color = [100, 230, 230]
         #ship settings
         self.ship_speed = 1.5
-        self.ufo_speed = 1.5
+        self.ufo_speed = 1
         self.missile_speed = 5
         self.ufo_space = 0.5
