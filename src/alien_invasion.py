@@ -32,12 +32,13 @@ class AlienInvasion:
     def run_game(self):
         """Start the main loop for the game."""
         #create ufos
-        self.creat_fleet_ufos()
+        self.create_fleet_ufos()
         
         while True:
             
             self._check_events()
             self.ship.update()
+            self._check_fleet_loc()
             self.ufos.update()
             self.missiles.update()
             self._update_screen()
@@ -72,8 +73,17 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _check_fleet_loc(self):
+        for ufo in self.ufos.sprites():
+            if ufo.rect.right >= ufo.screen_rect.right or ufo.rect.left <= ufo.screen_rect.left:
+                self._change_fleet_dir()
 
-    def creat_fleet_ufos(self):
+    def _change_fleet_dir(self):
+        for ufo in self.ufos.sprites():
+            ufo.move_left = not ufo.move_left
+            ufo.move_right = not ufo.move_right
+
+    def create_fleet_ufos(self):
         "Determine avaialable space for UFOs"
         ufo_example = Ufo(self)
         available_width = self.settings.screen_width
